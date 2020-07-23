@@ -1,4 +1,7 @@
 const escapeString = function escapeString(value) {
+    if ( value === null || value === undefined ) {
+        return "";
+    }
     return Buffer.from(
         value
             .toString()
