@@ -1,5 +1,5 @@
 const escapeString = function escapeString(value) {
-    if ( value === null || value === undefined ) {
+    if (value === null || value === undefined) {
         return "";
     }
     return Buffer.from(
@@ -9,7 +9,7 @@ const escapeString = function escapeString(value) {
             .replace(/\(/g, "\\(")
             .replace(/\)/g, "\\)")
     ).toString("utf8");
-}
+};
 
 exports.createFdf = function (data) {
     // only this sequence in FDF header requires char codes
@@ -28,7 +28,11 @@ exports.createFdf = function (data) {
         try {
             body = Buffer.concat([
                 body,
-                Buffer.from(`<<\n/T (${escapeString(name)})\n/V (${escapeString(data[name])})\n>>\n`)
+                Buffer.from(
+                    `<<\n/T (${escapeString(name)})\n/V (${escapeString(
+                        data[name]
+                    )})\n>>\n`
+                ),
             ]);
         } catch (err) {
             throw Error(`Cannot escape string: '${name}: ${data[name]}'.`);
@@ -40,4 +44,4 @@ exports.createFdf = function (data) {
     );
 
     return Buffer.concat([header, body, footer]);
-}
+};
