@@ -9,7 +9,7 @@
   "description": "Take an existing PDF Form and data and PDF Filler will create a new PDF with all given fields populated.",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha test/test.js",
+    "test": "nyc ava --timeout=60s",
     "lint": "eslint \"**/*.js\""
   },
   "keywords": [
@@ -28,11 +28,11 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "ava": "^3.11.0",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "mocha": "^8.0.1",
-    "prettier": "^2.0.5",
-    "should": "^13.2.3"
+    "nyc": "^15.1.0",
+    "prettier": "^2.0.5"
   }
 }
