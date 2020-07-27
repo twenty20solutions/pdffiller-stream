@@ -63,3 +63,4 @@ mongod
 *.orig
 logs/
 build/
+.nyc_output
