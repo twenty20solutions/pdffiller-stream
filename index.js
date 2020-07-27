@@ -18,22 +18,15 @@ var pdffiller = {
         return tmpFDFData;
     },
 
-    convFieldJson2FDF: function (fieldJson) {
-        var _keys = _.map(fieldJson, "title"),
-            _values = _.map(fieldJson, "fieldValue");
-
-        _values = _.map(_values, function (val) {
-            if (val === true) {
-                return "Yes";
-            } else if (val === false) {
-                return "Off";
-            }
-            return val;
-        });
-
-        var jsonObj = _.zipObject(_keys, _values);
-
-        return jsonObj;
+    convFieldJson2FDF: (fieldJson) => {
+        let json = {};
+        for (const row of fieldJson) {
+            let value = row.fieldValue;
+            if (value === true) value = "Yes";
+            else if (value === false) value = "Off";
+            json[row.title] = value;
+        }
+        return json;
     },
 
     generateFieldJson: function (sourceFile, nameRegex) {
