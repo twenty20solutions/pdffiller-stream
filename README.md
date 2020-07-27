@@ -63,7 +63,7 @@ A chainable convenience method `toFile` is attached to the response, if you simp
 pdfFiller.fillForm( sourcePDF, data)
     .toFile('outputFile.PDF')
     .then(() => {
-        // your file has been written 
+        // your file has been written
     }).catch((err) => {
         console.log(err);
     });
@@ -78,14 +78,14 @@ pdfFiller.fillForm( sourcePDF, data)
         const Bucket = 'some-bucket';
         const Key = 'myFancyNewFilledPDF';
         const ContentType = 'application/pdf';
-        
+
         const uploader = new AWS.S3.ManagedUpload({
             params: {Bucket, Key, Body, ContentType},
             service: s3,
         });
-        
+
         uploader.promise().then((data) => {/* do something with AWS response */})
-        
+
     }).catch((err) => {
         console.log(err);
     });
@@ -113,7 +113,7 @@ import pdfFiller from 'pdffiller-stream';
 const sourcePDF = "test/test.pdf";
 
 // Override the default field name regex. Default: /FieldName: ([^\n]*)/
-const nameRegex = null;  
+const nameRegex = null;
 
 const FDF_data = pdfFiller.generateFDFTemplate(sourcePDF, nameRegex).then((fdfData) => {
     console.log(fdfData);
