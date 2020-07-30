@@ -50,8 +50,8 @@ const pdffiller = {
 
     generateFieldJson: (sourceFile, nameRegex) => {
         let regName = /FieldName: ([^\n]*)/;
-        const regType = /FieldType: ([A-Za-z\t .]+)/;
-        const regFlags = /FieldFlags: ([0-9\t .]+)/;
+        const regType = /FieldType: ([\t .A-Za-z]+)/;
+        const regFlags = /FieldFlags: ([\d\t .]+)/;
         const fieldArray = [];
 
         if (nameRegex !== null && typeof nameRegex == "object")
@@ -64,10 +64,10 @@ const pdffiller = {
             ]);
             let output = "";
 
-            childProcess.on("error", (err) => {
-                console.log("pdftk exec error: " + err);
-                reject(err);
-            });
+            childProcess.on("error", (error) => reject(error));
+            childProcess.stdout.on("error", (error) => reject(error));
+            childProcess.stderr.on("error", (error) => reject(error));
+            childProcess.stdin.on("error", (error) => reject(error));
 
             childProcess.stdout.on("data", (data) => {
                 output += data;
@@ -124,10 +124,10 @@ const pdffiller = {
 
             const childProcess = spawn("pdftk", args);
 
-            childProcess.stderr.on("data", (err) => {
-                console.error("pdftk exec error: " + err);
-                reject(err);
-            });
+            childProcess.on("error", (error) => reject(error));
+            childProcess.stdout.on("error", (error) => reject(error));
+            childProcess.stderr.on("error", (error) => reject(error));
+            childProcess.stdin.on("error", (error) => reject(error));
 
             const sendData = (data) => {
                 childProcess.stdout.pause();
@@ -166,14 +166,12 @@ const toFile = (promised, path) => {
             .then((outputStream) => {
                 const output = fs.createWriteStream(path);
                 outputStream.pipe(output);
-                outputStream.on("close", function () {
+                outputStream.on("close", () => {
                     output.end();
                     resolve();
                 });
             })
-            .catch(function (error) {
-                reject(error);
-            });
+            .catch((error) => reject(error));
     });
 };
 
