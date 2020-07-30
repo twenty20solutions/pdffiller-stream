@@ -78,12 +78,12 @@ const pdffiller = {
         return new Promise(
             function (resolve, reject) {
                 this.generateFieldJson(sourceFile, nameRegex)
-                    .then(function (_form_fields) {
-                        var _keys = _.map(_form_fields, "title"),
-                            _values = _.map(_form_fields, "fieldValue"),
-                            jsonObj = _.zipObject(_keys, _values);
-
-                        resolve(jsonObj);
+                    .then((formFields) => {
+                        let json = {};
+                        for (const row of formFields) {
+                            json[row.title] = row.fieldValue;
+                        }
+                        resolve(json);
                     })
                     .catch((err) => {
                         reject(err);
