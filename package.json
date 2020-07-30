@@ -1,10 +1,10 @@
 {
-  "name": "pdffiller-stream",
+  "name": "@sparticuz/pdffiller",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jasonphillips/pdffiller-stream.git"
+    "url": "https://github.com/Sparticuz/pdffiller-stream.git"
   },
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": false,
   "description": "Take an existing PDF Form and data and PDF Filler will create a new PDF with all given fields populated.",
   "main": "index.js",
@@ -21,7 +21,7 @@
   ],
   "dependencies": {},
   "author": {
-    "name": "original: John Taylor and David Baldwynn; stream fork: Jason Phillips"
+    "name": "original: John Taylor and David Baldwynn; stream fork: Jason Phillips, Kyle McNally"
   },
   "license": "MIT",
   "readmeFilename": "README.md",
