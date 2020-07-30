@@ -10,10 +10,12 @@ const fdf = require("../fdf");
 const test = require("ava");
 
 const expected = require("./_expected_data");
+const sourcePDF = "test/test.pdf";
+const source2PDF = "test/test1.pdf";
 
 const dest2PDF = "test/test_complete2.pdf";
-const source2PDF = "test/test.pdf";
-const source1PDF = "test/test1.pdf";
+const dest3PDF = "test/test_complete3.pdf";
+const dest4PDF = "test/test_complete4.pdf";
 
 const Readable = require("stream").Readable;
 
@@ -33,7 +35,7 @@ var _data = {
 };
 
 test("should return a readable stream when creating a pdf from test.pdf with filled data", async (t) => {
-    const pdf = await pdfFiller.fillForm(source2PDF, _data);
+    const pdf = await pdfFiller.fillForm(sourcePDF, _data);
     if (pdf instanceof Readable) {
         t.pass();
     } else {
@@ -42,9 +44,7 @@ test("should return a readable stream when creating a pdf from test.pdf with fil
 });
 
 test("should use toFile to create a completely filled PDF that is read-only", async (t) => {
-    await pdfFiller
-        .fillFormWithFlatten(source2PDF, _data, true)
-        .toFile(dest2PDF);
+    await pdfFiller.fillForm(sourcePDF, _data).toFile(dest2PDF);
     const roFdf = await pdfFiller.generateFieldJson(dest2PDF, null);
     t.is(roFdf.length, 0);
 });
@@ -84,28 +84,22 @@ test("should fail to FDF template with an invalid value", (t) => {
 */
 
 test("should create an unflattened PDF with unfilled fields remaining", async (t) => {
-    const dest3PDF = "test/test_complete3.pdf";
     const _data2 = {
         first_name: "Jerry",
     };
 
-    await pdfFiller
-        .fillFormWithFlatten(source2PDF, _data2, false)
-        .toFile(dest3PDF);
+    await pdfFiller.fillForm(sourcePDF, _data2, false).toFile(dest3PDF);
     const rwFdf = await pdfFiller.generateFieldJson(dest3PDF, null);
     t.not(rwFdf.length, 0);
 });
 
 test("should handle expanded utf characters and diacritics", async (t) => {
-    const dest4PDF = "test/test_complete4.pdf";
     const diacriticsData = Object.assign({}, _data, {
         first_name: "मुख्यपृष्ठम्",
-        last_name: "é àالعقائدية الأخرى",
+        last_name: "العقائدية الأخرى",
     });
 
-    await pdfFiller
-        .fillFormWithFlatten(source2PDF, diacriticsData, false)
-        .toFile(dest4PDF);
+    await pdfFiller.fillForm(sourcePDF, diacriticsData, false).toFile(dest4PDF);
     const fdf = await pdfFiller.generateFieldJson(dest4PDF, null);
     t.not(fdf.length, 0);
 });
@@ -162,12 +156,12 @@ test("should generate form field JSON as expected", async (t) => {
         },
     ];
 
-    const fdf = await pdfFiller.generateFieldJson(source2PDF, null);
+    const fdf = await pdfFiller.generateFieldJson(sourcePDF, null);
     t.deepEqual(fdf, _expected);
 });
 
 test("should generate another form field JSON with no errors", async (t) => {
-    const fdf = await pdfFiller.generateFieldJson(source1PDF, null);
+    const fdf = await pdfFiller.generateFieldJson(source2PDF, null);
     t.deepEqual(fdf, expected.test1.form_fields);
 });
 
@@ -182,12 +176,12 @@ test("should generate a FDF Template as expected", async (t) => {
         hockey: "",
         nascar: "",
     };
-    const fdf = await pdfFiller.generateFDFTemplate(source2PDF, null);
+    const fdf = await pdfFiller.generateFDFTemplate(sourcePDF, null);
     t.deepEqual(fdf, _expected);
 });
 
 test("should generate another FDF Template with no errors", async (t) => {
-    const fdf = await pdfFiller.generateFDFTemplate(source1PDF, null);
+    const fdf = await pdfFiller.generateFDFTemplate(source2PDF, null);
     t.deepEqual(fdf, expected.test1.fdfTemplate);
 });
 
