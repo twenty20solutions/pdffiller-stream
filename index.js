@@ -124,10 +124,10 @@ const pdffiller = {
 
             const childProcess = spawn("pdftk", args);
 
-            childProcess.stderr.on("data", (err) => {
-                console.error("pdftk exec error: " + err);
-                reject(err);
-            });
+            childProcess.on("error", (error) => reject(error));
+            childProcess.stdout.on("error", (error) => reject(error));
+            childProcess.stderr.on("error", (error) => reject(error));
+            childProcess.stdin.on("error", (error) => reject(error));
 
             const sendData = (data) => {
                 childProcess.stdout.pause();
