@@ -1,7 +1,7 @@
 PDF Filler Stream
 ======
 
-[![npm version](https://badge.fury.io/js/pdffiller-stream.svg)](https://badge.fury.io/js/pdffiller-stream) [![Build Status](https://travis-ci.org/jasonphillips/pdffiller-stream.svg?branch=master)](https://travis-ci.org/jasonphillips/pdffiller-stream)
+[![npm version](https://badge.fury.io/js/%40sparticuz%2Fpdffiller.svg)](https://badge.fury.io/js/%40sparticuz%2Fpdffiller) [![Build Status](https://travis-ci.org/Sparticuz/pdffiller-stream.svg?branch=master)](https://travis-ci.org/Sparticuz/pdffiller-stream)
 
 > This is a fork of the [pdf-filler](https://github.com/pdffillerjs/pdffiller) package, modified to return promises and readable streams, by piping data in/out of a spawned pdftk process instead of temporarily writing files to disk.
 
@@ -18,7 +18,7 @@ Quick start
 Then, install this library:
 
 ```bash
-npm install pdffiller-stream --save
+npm install @sparticuz/pdffiller --save
 ```
 
 **Note for MacOS / OSX Developers** - the main `pdftk` package for OSX is currently broken as of OS 10.11, but PDFLabs released an alternative build that should work normally on the platform: https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg
@@ -45,7 +45,7 @@ const data = {
     "nascar" : "Off"
 };
 
-pdfFiller.fillForm( sourcePDF, data)
+pdfFiller.fillForm(sourcePDF, data)
     .then((outputStream) => {
         // use the outputStream here;
         // will be instance of stream.Readable
@@ -60,7 +60,7 @@ This will take the test.pdf, fill the fields with the data values and stream a f
 A chainable convenience method `toFile` is attached to the response, if you simply wish to write the stream to a file with no fuss:
 
 ```javascript
-pdfFiller.fillForm( sourcePDF, data)
+pdfFiller.fillForm(sourcePDF, data)
     .toFile('outputFile.PDF')
     .then(() => {
         // your file has been written
@@ -72,7 +72,7 @@ pdfFiller.fillForm( sourcePDF, data)
 You could also stream the resulting data directly to AWS, doing something like this with an instantiated `s3` client:
 
 ```javascript
-pdfFiller.fillForm( sourcePDF, data)
+pdfFiller.fillForm(sourcePDF, data)
     .then((outputStream) => {
         const Body = outputStream;
         const Bucket = 'some-bucket';
@@ -92,13 +92,13 @@ pdfFiller.fillForm( sourcePDF, data)
 
 ```
 
-Calling `fillFormWithFlatten()` with `shouldFlatten = false` will leave any unmapped fields still editable, as per the `pdftk` command specification.
+Calling `fillForm()` with `shouldFlatten = false` will leave any unmapped fields still editable, as per the `pdftk` command specification.
 
 ```javascript
 
 const shouldFlatten = false;
 
-pdfFiller.fillFormWithFlatten(sourcePDF, data, shouldFlatten)
+pdfFiller.fillForm(sourcePDF, data, shouldFlatten)
     .then((outputStream) {
         // etc, same as above
     })
