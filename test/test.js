@@ -32,7 +32,7 @@ var _data = {
     nascar: "Off",
 };
 
-test("should return a readable stream when creating a pdf from test.pdf with filled data", async t => {
+test("should return a readable stream when creating a pdf from test.pdf with filled data", async (t) => {
     const pdf = await pdfFiller.fillForm(source2PDF, _data);
     if (pdf instanceof Readable) {
         t.pass();
@@ -41,13 +41,15 @@ test("should return a readable stream when creating a pdf from test.pdf with fil
     }
 });
 
-test("should use toFile to create a completely filled PDF that is read-only", async t => {
-    const pdf = await pdfFiller.fillFormWithFlatten(source2PDF, _data, true).toFile(dest2PDF);
+test("should use toFile to create a completely filled PDF that is read-only", async (t) => {
+    await pdfFiller
+        .fillFormWithFlatten(source2PDF, _data, true)
+        .toFile(dest2PDF);
     const roFdf = await pdfFiller.generateFieldJson(dest2PDF, null);
     t.is(roFdf.length, 0);
 });
 
-test("should create a FDF template with a null value", t => {
+test("should create a FDF template with a null value", (t) => {
     const fdfData = fdf.createFdf({
         ..._data,
         nulval: null,
@@ -66,30 +68,34 @@ test("should create a FDF template with a null value", t => {
     t.not(fdfData, 0);
 }); */
 
-test("should create an unflattened PDF with unfilled fields remaining", async t => {
+test("should create an unflattened PDF with unfilled fields remaining", async (t) => {
     const dest3PDF = "test/test_complete3.pdf";
     const _data2 = {
         first_name: "Jerry",
     };
 
-    const pdf = await pdfFiller.fillFormWithFlatten(source2PDF, _data2, false).toFile(dest3PDF);
+    await pdfFiller
+        .fillFormWithFlatten(source2PDF, _data2, false)
+        .toFile(dest3PDF);
     const rwFdf = await pdfFiller.generateFieldJson(dest3PDF, null);
     t.not(rwFdf.length, 0);
 });
 
-test("should handle expanded utf characters and diacritics", async t => {
+test("should handle expanded utf characters and diacritics", async (t) => {
     const dest4PDF = "test/test_complete4.pdf";
     const diacriticsData = Object.assign({}, _data, {
         first_name: "मुख्यपृष्ठम्",
         last_name: "é àالعقائدية الأخرى",
     });
 
-    const pdf = await pdfFiller.fillFormWithFlatten(source2PDF, diacriticsData, false).toFile(dest4PDF);
+    await pdfFiller
+        .fillFormWithFlatten(source2PDF, diacriticsData, false)
+        .toFile(dest4PDF);
     const fdf = await pdfFiller.generateFieldJson(dest4PDF, null);
     t.not(fdf.length, 0);
 });
 
-test("should generate form field JSON as expected", async t => {
+test("should generate form field JSON as expected", async (t) => {
     const _expected = [
         {
             fieldFlags: "0",
@@ -145,12 +151,12 @@ test("should generate form field JSON as expected", async t => {
     t.deepEqual(fdf, _expected);
 });
 
-test("should generate another form field JSON with no errors", async t => {
+test("should generate another form field JSON with no errors", async (t) => {
     const fdf = await pdfFiller.generateFieldJson(source1PDF, null);
     t.deepEqual(fdf, expected.test1.form_fields);
 });
 
-test("should generate a FDF Template as expected", async t => {
+test("should generate a FDF Template as expected", async (t) => {
     const _expected = {
         last_name: "",
         first_name: "",
@@ -165,12 +171,12 @@ test("should generate a FDF Template as expected", async t => {
     t.deepEqual(fdf, _expected);
 });
 
-test("should generate another FDF Template with no errors", async t => {
+test("should generate another FDF Template with no errors", async (t) => {
     const fdf = await pdfFiller.generateFDFTemplate(source1PDF, null);
     t.deepEqual(fdf, expected.test1.fdfTemplate);
 });
 
-test("Should generate an corresponding FDF object", t => {
+test("Should generate an corresponding FDF object", (t) => {
     const _expected = {
         first_name: "John",
         last_name: "Doe",
@@ -229,7 +235,7 @@ test("Should generate an corresponding FDF object", t => {
     t.deepEqual(FDFData, _expected);
 });
 
-test("Should convert formJson to FDF data as expected", t => {
+test("Should convert formJson to FDF data as expected", (t) => {
     const _convMap = {
         lastName: "last_name",
         firstName: "first_name",
