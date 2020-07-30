@@ -49,6 +49,17 @@ test("should use toFile to create a completely filled PDF that is read-only", as
     t.is(roFdf.length, 0);
 });
 
+/*
+test("should use toFile to create a completely filled PDF, but to an invalid path", async (t) => {
+    const error = await t.throwsAsync(async () => {
+        await pdfFiller
+            .fillFormWithFlatten(source2PDF, _data, true)
+            .toFile("/");
+    });
+    t.is(error, "Error: EISDIR: illegal operation on a directory, open '/'");
+});
+*/
+
 test("should create a FDF template with a null value", (t) => {
     const fdfData = fdf.createFdf({
         ..._data,
@@ -57,16 +68,20 @@ test("should create a FDF template with a null value", (t) => {
     t.assert(fdfData);
 });
 
-/* test("should fail to FDF template with an invalid value", t => {
+/*
+test("should fail to FDF template with an invalid value", (t) => {
     const fdfData = fdf.createFdf({
         ..._data,
         badval: {
-            badvar: false
+            badvar: function () {
+                return false;
+            },
         },
     });
     console.log(fdfData.toString());
     t.not(fdfData, 0);
-}); */
+});
+*/
 
 test("should create an unflattened PDF with unfilled fields remaining", async (t) => {
     const dest3PDF = "test/test_complete3.pdf";
