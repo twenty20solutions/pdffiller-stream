@@ -1,4 +1,4 @@
-const escapeString = function escapeString(value) {
+const escapeString = (value) => {
     if (value === null || value === undefined) {
         return "";
     }
@@ -11,7 +11,7 @@ const escapeString = function escapeString(value) {
     ).toString("utf8");
 };
 
-exports.createFdf = function (data) {
+exports.createFdf = (data) => {
     // only this sequence in FDF header requires char codes
     const header = Buffer.from(
         `%FDF-1.2\n${
