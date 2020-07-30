@@ -112,14 +112,17 @@ const pdffiller = {
         );
     },
 
-    fillFormWithOptions: function (sourceFile, fieldValues, shouldFlatten) {
-        var promised = new Promise((resolve, reject) => {
+    fillForm: (sourceFile, fieldValues, extraArguments = ["flatten"]) => {
+        const promised = new Promise((resolve, reject) => {
             //Generate the data from the field values.
             const FDFinput = fdf.createFdf(fieldValues);
 
-            var args = [sourceFile, "fill_form", "-", "output", "-"];
-            if (shouldFlatten) {
-                args.push("flatten");
+            const args = [sourceFile, "fill_form", "-", "output", "-"];
+
+            if (typeof extraArguments === "object") {
+                for (const argument of extraArguments) {
+                    args.push(argument);
+                }
             }
 
             const childProcess = spawn("pdftk", args);
@@ -146,14 +149,6 @@ const pdffiller = {
         // bind convenience method toFile for chaining
         promised.toFile = toFile.bind(null, promised);
         return promised;
-    },
-
-    fillFormWithFlatten: function (sourceFile, fieldValues, shouldFlatten) {
-        return this.fillFormWithOptions(sourceFile, fieldValues, shouldFlatten);
-    },
-
-    fillForm: function (sourceFile, fieldValues) {
-        return this.fillFormWithFlatten(sourceFile, fieldValues, true);
     },
 };
 
