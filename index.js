@@ -1,12 +1,32 @@
 const spawn = require("child_process").spawn;
 const fdf = require("./fdf.js");
-const _ = require("lodash");
 const fs = require("fs");
 
 const pdffiller = {
+    /**
+     * This function converts the field names of a JSON object
+     * to the field names of a PDF Form. NOT DONE! This is the
+     * only reason lodash is here
+     * @param {*} formFields - The fields in the PDF
+     * @param {*} convMap - The conversion matrix
+     */
     mapForm2PDF: function (formFields, convMap) {
-        tmpFDFData = _.mapKeys(tmpFDFData, function (value, key) {
+        // First, get the field json.
         let tmpFDFData = this.convFieldJson2FDF(formFields);
+
+        // https://github.com/lodash/lodash/blob/master/mapKey.js
+        const mapKeys = (object, iteratee) => {
+            object = Object(object);
+            const result = {};
+
+            Object.keys(object).forEach((key) => {
+                const value = object[key];
+                result[iteratee(value, key, object)] = value;
+            });
+            return result;
+        };
+
+        tmpFDFData = mapKeys(tmpFDFData, (value, key) => {
             try {
                 convMap[key];
             } catch (err) {
