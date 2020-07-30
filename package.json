@@ -19,9 +19,7 @@
     "pdffiller",
     "pdf"
   ],
-  "dependencies": {
-    "lodash": "^4.17.9"
-  },
+  "dependencies": {},
   "author": {
     "name": "original: John Taylor and David Baldwynn; stream fork: Jason Phillips"
   },
