@@ -66,7 +66,7 @@ export default {
     fillForm: (
         sourceFile: string,
         fieldValues: never,
-        extraArguments = ["flatten"]
+        extraArguments: string[] | false = ["flatten"]
     ): Promise<Readable> => {
         const promised: Promise<Readable> = new Promise((resolve, reject) => {
             // Generate the data from the field values.
