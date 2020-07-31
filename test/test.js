@@ -5,25 +5,24 @@
  *
  */
 
-const pdfFiller = require("..");
-const fdf = require("../fdf");
 const test = require("ava");
+const { Readable } = require("stream");
+const pdfFiller = require("..").default;
+const createFdf = require("../dist/fdf").default;
+const { test1 } = require("./_expected-data");
 
-const expected = require("./_expected_data");
 const sourcePDF = "test/test.pdf";
 const source2PDF = "test/test1.pdf";
 
-const dest2PDF = "test/test_complete2.pdf";
-const dest3PDF = "test/test_complete3.pdf";
-const dest4PDF = "test/test_complete4.pdf";
-
-const Readable = require("stream").Readable;
+const destination2PDF = "test/test_complete2.pdf";
+const destination3PDF = "test/test_complete3.pdf";
+const destination4PDF = "test/test_complete4.pdf";
 
 /**
  * Unit tests
  */
 
-var _data = {
+const data = {
     baseball: "Yes",
     basketball: "Off",
     date: "Jan 1, 2013",
@@ -35,7 +34,7 @@ var _data = {
 };
 
 test("should return a readable stream when creating a pdf from test.pdf with filled data", async (t) => {
-    const pdf = await pdfFiller.fillForm(sourcePDF, _data);
+    const pdf = await pdfFiller.fillForm(sourcePDF, data);
     if (pdf instanceof Readable) {
         t.pass();
     } else {
@@ -44,8 +43,8 @@ test("should return a readable stream when creating a pdf from test.pdf with fil
 });
 
 test("should use toFile to create a completely filled PDF that is read-only", async (t) => {
-    await pdfFiller.fillForm(sourcePDF, _data).toFile(dest2PDF);
-    const roFdf = await pdfFiller.generateFieldJson(dest2PDF, null);
+    await pdfFiller.fillForm(sourcePDF, data).toFile(destination2PDF);
+    const roFdf = await pdfFiller.generateFieldJson(destination2PDF);
     t.is(roFdf.length, 0);
 });
 
@@ -61,16 +60,16 @@ test("should use toFile to create a completely filled PDF, but to an invalid pat
 */
 
 test("should create a FDF template with a null value", (t) => {
-    const fdfData = fdf.createFdf({
-        ..._data,
-        nulval: null,
+    const fdfData = createFdf({
+        ...data,
+        nulval: undefined,
     });
     t.assert(fdfData);
 });
 
 /*
 test("should fail to FDF template with an invalid value", (t) => {
-    const fdfData = fdf.createFdf({
+    const fdfData = createFdf({
         ..._data,
         badval: {
             badvar: function () {
@@ -84,231 +83,234 @@ test("should fail to FDF template with an invalid value", (t) => {
 */
 
 test("should create an unflattened PDF with unfilled fields remaining", async (t) => {
-    const _data2 = {
+    const data2 = {
         first_name: "Jerry",
     };
 
-    await pdfFiller.fillForm(sourcePDF, _data2, false).toFile(dest3PDF);
-    const rwFdf = await pdfFiller.generateFieldJson(dest3PDF, null);
+    await pdfFiller.fillForm(sourcePDF, data2, false).toFile(destination3PDF);
+    const rwFdf = await pdfFiller.generateFieldJson(destination3PDF);
     t.not(rwFdf.length, 0);
 });
 
 test("should handle expanded utf characters and diacritics", async (t) => {
-    const diacriticsData = Object.assign({}, _data, {
+    const diacriticsData = {
+        ...data,
         first_name: "मुख्यपृष्ठम्",
         last_name: "العقائدية الأخرى",
-    });
+    };
 
-    await pdfFiller.fillForm(sourcePDF, diacriticsData, false).toFile(dest4PDF);
-    const fdf = await pdfFiller.generateFieldJson(dest4PDF, null);
+    await pdfFiller
+        .fillForm(sourcePDF, diacriticsData, false)
+        .toFile(destination4PDF);
+    const fdf = await pdfFiller.generateFieldJson(destination4PDF);
     t.not(fdf.length, 0);
 });
 
 test("should generate form field JSON as expected", async (t) => {
-    const _expected = [
+    const expected2 = [
         {
             fieldFlags: "0",
+            fieldType: "Text",
+            fieldValue: "",
             title: "first_name",
-            fieldValue: "",
-            fieldType: "Text",
         },
         {
             fieldFlags: "0",
+            fieldType: "Text",
+            fieldValue: "",
             title: "last_name",
-            fieldValue: "",
-            fieldType: "Text",
         },
         {
             fieldFlags: "0",
+            fieldType: "Text",
+            fieldValue: "",
             title: "date",
-            fieldValue: "",
-            fieldType: "Text",
         },
         {
             fieldFlags: "0",
+            fieldType: "Button",
+            fieldValue: "",
             title: "football",
-            fieldValue: "",
-            fieldType: "Button",
         },
         {
             fieldFlags: "0",
+            fieldType: "Button",
+            fieldValue: "",
             title: "baseball",
-            fieldValue: "",
-            fieldType: "Button",
         },
         {
             fieldFlags: "0",
+            fieldType: "Button",
+            fieldValue: "",
             title: "basketball",
-            fieldValue: "",
-            fieldType: "Button",
         },
         {
             fieldFlags: "0",
+            fieldType: "Button",
+            fieldValue: "",
             title: "nascar",
-            fieldValue: "",
-            fieldType: "Button",
         },
         {
             fieldFlags: "0",
-            title: "hockey",
-            fieldValue: "",
             fieldType: "Button",
+            fieldValue: "",
+            title: "hockey",
         },
     ];
 
-    const fdf = await pdfFiller.generateFieldJson(sourcePDF, null);
-    t.deepEqual(fdf, _expected);
+    const fdf = await pdfFiller.generateFieldJson(sourcePDF);
+    t.deepEqual(fdf, expected2);
 });
 
 test("should generate another form field JSON with no errors", async (t) => {
-    const fdf = await pdfFiller.generateFieldJson(source2PDF, null);
-    t.deepEqual(fdf, expected.test1.form_fields);
+    const fdf = await pdfFiller.generateFieldJson(source2PDF);
+    t.deepEqual(fdf, test1.form_fields);
 });
 
 test("should generate a FDF Template as expected", async (t) => {
-    const _expected = {
-        last_name: "",
-        first_name: "",
-        date: "",
-        football: "",
+    const expected3 = {
         baseball: "",
         basketball: "",
+        date: "",
+        first_name: "",
+        football: "",
         hockey: "",
+        last_name: "",
         nascar: "",
     };
-    const fdf = await pdfFiller.generateFDFTemplate(sourcePDF, null);
-    t.deepEqual(fdf, _expected);
+    const fdf = await pdfFiller.generateFDFTemplate(sourcePDF);
+    t.deepEqual(fdf, expected3);
 });
 
 test("should generate another FDF Template with no errors", async (t) => {
-    const fdf = await pdfFiller.generateFDFTemplate(source2PDF, null);
-    t.deepEqual(fdf, expected.test1.fdfTemplate);
+    const fdf = await pdfFiller.generateFDFTemplate(source2PDF);
+    t.deepEqual(fdf, test1.fdfTemplate);
 });
 
 test("Should generate an corresponding FDF object", (t) => {
-    const _expected = {
-        first_name: "John",
-        last_name: "Doe",
-        date: "Jan 1, 2013",
-        football: "Off",
+    const expected4 = {
         baseball: "Yes",
         basketball: "Off",
+        date: "Jan 1, 2013",
+        first_name: "John",
+        football: "Off",
         hockey: "Yes",
+        last_name: "Doe",
         nascar: "Off",
     };
 
-    const _data = [
+    const data2 = [
         {
-            title: "first_name",
-            fieldfieldType: "Text",
+            fieldType: "Text",
             fieldValue: "John",
+            title: "first_name",
         },
         {
-            title: "last_name",
-            fieldfieldType: "Text",
+            fieldType: "Text",
             fieldValue: "Doe",
+            title: "last_name",
         },
         {
-            title: "date",
             fieldType: "Text",
             fieldValue: "Jan 1, 2013",
+            title: "date",
         },
         {
+            fieldType: "Button",
+            fieldValue: false,
             title: "football",
-            fieldType: "Button",
-            fieldValue: false,
         },
         {
+            fieldType: "Button",
+            fieldValue: true,
             title: "baseball",
-            fieldType: "Button",
-            fieldValue: true,
         },
         {
+            fieldType: "Button",
+            fieldValue: false,
             title: "basketball",
-            fieldType: "Button",
-            fieldValue: false,
         },
         {
-            title: "hockey",
             fieldType: "Button",
             fieldValue: true,
+            title: "hockey",
         },
         {
-            title: "nascar",
             fieldType: "Button",
             fieldValue: false,
+            title: "nascar",
         },
     ];
 
-    const FDFData = pdfFiller.convFieldJson2FDF(_data);
-    t.deepEqual(FDFData, _expected);
+    const FDFData = pdfFiller.convFieldJson2FDF(data2);
+    t.deepEqual(FDFData, expected4);
 });
 
 test("Should convert formJson to FDF data as expected", (t) => {
-    const _convMap = {
-        lastName: "last_name",
-        firstName: "first_name",
+    const convMap = {
         Date: "date",
-        footballField: "football",
         baseballField: "baseball",
         bballField: "basketball",
+        firstName: "first_name",
+        footballField: "football",
         hockeyField: "hockey",
+        lastName: "last_name",
         nascarField: "nascar",
     };
 
-    const _data = [
+    const data3 = [
         {
-            title: "lastName",
-            fieldfieldType: "Text",
+            fieldType: "Text",
             fieldValue: "John",
+            title: "lastName",
         },
         {
-            title: "firstName",
-            fieldfieldType: "Text",
+            fieldType: "Text",
             fieldValue: "Doe",
+            title: "firstName",
         },
         {
-            title: "Date",
             fieldType: "Text",
             fieldValue: "Jan 1, 2013",
+            title: "Date",
         },
         {
+            fieldType: "Button",
+            fieldValue: false,
             title: "footballField",
-            fieldType: "Button",
-            fieldValue: false,
         },
         {
+            fieldType: "Button",
+            fieldValue: true,
             title: "baseballField",
-            fieldType: "Button",
-            fieldValue: true,
         },
         {
+            fieldType: "Button",
+            fieldValue: false,
             title: "bballField",
-            fieldType: "Button",
-            fieldValue: false,
         },
         {
-            title: "hockeyField",
             fieldType: "Button",
             fieldValue: true,
+            title: "hockeyField",
         },
         {
-            title: "nascarField",
             fieldType: "Button",
             fieldValue: false,
+            title: "nascarField",
         },
     ];
 
-    const _expected = {
-        last_name: "John",
-        first_name: "Doe",
-        date: "Jan 1, 2013",
-        football: "Off",
+    const expected5 = {
         baseball: "Yes",
         basketball: "Off",
+        date: "Jan 1, 2013",
+        first_name: "Doe",
+        football: "Off",
         hockey: "Yes",
+        last_name: "John",
         nascar: "Off",
     };
-    const convertedFDF = pdfFiller.mapForm2PDF(_data, _convMap);
-    t.deepEqual(convertedFDF, _expected);
+    const convertedFDF = pdfFiller.mapForm2PDF(data3, convMap);
+    t.deepEqual(convertedFDF, expected5);
 });

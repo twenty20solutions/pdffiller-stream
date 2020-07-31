@@ -64,3 +64,4 @@ mongod
 logs/
 build/
 .nyc_output
+dist
