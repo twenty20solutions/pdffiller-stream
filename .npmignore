@@ -9,3 +9,7 @@ test
 .travis.yml
 *.fdf
 *.pdf
+src
+tsconfig.json
+.gitattributes
+.editorconfig
