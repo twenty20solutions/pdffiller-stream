@@ -7,10 +7,14 @@
   "version": "2.0.0",
   "private": false,
   "description": "Take an existing PDF Form and data and PDF Filler will create a new PDF with all given fields populated.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "engines": {
+      "node": ">=12"
+  },
   "scripts": {
     "test": "nyc ava --timeout=60s",
-    "lint": "eslint \"**/*.js\""
+    "lint": "eslint \"**/*.ts\"",
+    "compile:js": "tsc -p tsconfig.json"
   },
   "keywords": [
     "nodejs",
@@ -26,11 +30,13 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "@sparticuz/eslint-config": "^2.1.2",
     "ava": "^3.11.0",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "nyc": "^15.1.0",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.7"
   }
 }
