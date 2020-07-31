@@ -24,6 +24,7 @@
     "pdf"
   ],
   "dependencies": {},
+  "types": "dist/index.d.ts",
   "author": {
     "name": "original: John Taylor and David Baldwynn; stream fork: Jason Phillips, Kyle McNally"
   },
