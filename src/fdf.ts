@@ -1,4 +1,5 @@
-const escapeString = (value) => {
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+const escapeString = (value: string | null | undefined) => {
     if (value === null || value === undefined) {
         return "";
     }
@@ -11,7 +12,7 @@ const escapeString = (value) => {
     ).toString("utf8");
 };
 
-exports.createFdf = (data) => {
+export default (data: never): Buffer => {
     // only this sequence in FDF header requires char codes
     const header = Buffer.from(
         `%FDF-1.2\n${
@@ -34,8 +35,8 @@ exports.createFdf = (data) => {
                     )})\n>>\n`
                 ),
             ]);
-        } catch (err) {
-            throw Error(`Cannot escape string: '${name}: ${data[name]}'.`);
+        } catch {
+            throw new Error(`Cannot escape string: '${name}: ${data[name]}'.`);
         }
     }
 
