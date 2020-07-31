@@ -1,5 +1,5 @@
 (function () {
-    var data = {
+    const data = {
         test1: {},
         test2: {},
     };
