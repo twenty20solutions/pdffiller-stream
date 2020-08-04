@@ -1,7 +1,7 @@
 PDF Filler Stream
 ======
 
-[![npm version](https://badge.fury.io/js/%40sparticuz%2Fpdffiller.svg)](https://badge.fury.io/js/%40sparticuz%2Fpdffiller) [![Build Status](https://travis-ci.org/Sparticuz/pdffiller-stream.svg?branch=master)](https://travis-ci.org/Sparticuz/pdffiller-stream)
+[![npm version](https://badge.fury.io/js/%40sparticuz%2Fpdffiller.svg)](https://badge.fury.io/js/%40sparticuz%2Fpdffiller) ![Node.js CI](https://github.com/Sparticuz/pdffiller-stream/workflows/Node.js%20CI/badge.svg) ![CodeQL](https://github.com/Sparticuz/pdffiller-stream/workflows/CodeQL/badge.svg)
 
 > This is a fork of the [pdf-filler](https://github.com/pdffillerjs/pdffiller) package, modified to return promises and readable streams, by piping data in/out of a spawned pdftk process instead of temporarily writing files to disk.
 
