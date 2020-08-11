@@ -31,7 +31,10 @@ const mapKeys = (
 /**
  * convenience chainable method for writing to a file (see examples)
  * */
-const toFile = (promised: Promise<Readable>, path: string) => {
+const toFile = (
+    promised: Promise<Readable>,
+    path: string
+): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         promised
             // eslint-disable-next-line promise/always-return
@@ -40,7 +43,7 @@ const toFile = (promised: Promise<Readable>, path: string) => {
                 outputStream.pipe(output);
                 outputStream.on("close", () => {
                     output.end();
-                    resolve("Done");
+                    resolve(true);
                 });
             })
             .catch((error) => reject(error));
