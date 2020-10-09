@@ -15,7 +15,7 @@
     "pretest": "npm run compile:js",
     "test": "nyc ava --timeout=60s",
     "lint": "eslint \"src/*.ts\"",
-    "compile:js": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json"
   },
   "keywords": [
     "nodejs",

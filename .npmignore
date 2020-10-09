@@ -13,3 +13,4 @@ src
 tsconfig.json
 .gitattributes
 .editorconfig
+.github
