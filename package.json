@@ -12,7 +12,7 @@
     "node": ">=12"
   },
   "scripts": {
-    "pretest": "npm run compile:js",
+    "pretest": "npm run build",
     "test": "nyc ava --timeout=60s",
     "lint": "eslint \"src/*.ts\"",
     "build": "tsc -p tsconfig.json"
