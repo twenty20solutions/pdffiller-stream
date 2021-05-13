@@ -1,7 +1,7 @@
 const test = require("ava");
 const fillForm = require("..").default;
 const generateFieldJson = require("../dist/generate-field-json").default;
-const { test1 } = require("./_expected-data");
+const { formFields } = require("./_expected-data");
 
 const sourcePDF = "test/test.pdf";
 const source2PDF = "test/test1.pdf";
@@ -115,7 +115,7 @@ test("should generate form field JSON as expected", async (t) => {
 
 test("should generate another form field JSON with no errors", async (t) => {
     const fdf = await generateFieldJson(source2PDF);
-    t.deepEqual(fdf, test1.form_fields);
+    t.deepEqual(fdf, formFields);
 });
 
 test.todo("should make sure nameRegex works correctly");

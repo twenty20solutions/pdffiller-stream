@@ -39,7 +39,7 @@ export default (sourceFile: string, nameRegex: never): Promise<FormField[]> => {
 
         childProcess.stdout.on("end", () => {
             const fields = output.split("---").slice(1);
-            fields.forEach((field) => {
+            for (const field of fields) {
                 fieldArray.push({
                     fieldFlags:
                         (regFlags.exec(field)?.[1].trim() as string) ?? "",
@@ -50,7 +50,7 @@ export default (sourceFile: string, nameRegex: never): Promise<FormField[]> => {
                     fieldValue: "",
                     title: (regName.exec(field)?.[1].trim() as string) ?? "",
                 });
-            });
+            }
             resolve(fieldArray);
         });
     });

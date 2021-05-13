@@ -7,7 +7,7 @@ const mapKeys = (
     iteratee: (
         value: unknown,
         key: string | number,
-        iObject: Record<string, string>
+        indexObject: Record<string, string>
     ) => string
 ) => {
     const result: Record<string, string> = {};
@@ -34,6 +34,7 @@ export default (
         temporaryFDFData,
         (_value: unknown, key: string | number) => {
             if (Object.prototype.hasOwnProperty.call(convMap, key)) {
+                // eslint-disable-next-line security/detect-object-injection
                 return convMap[key];
             }
             return key as string;

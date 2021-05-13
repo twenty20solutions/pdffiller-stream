@@ -1,10 +1,6 @@
 /* eslint-disable sort-keys */
-(function () {
-    const data = {
-        test1: {},
-        test2: {},
-    };
-    data.test1.form_fields = [
+module.exports = {
+    formFields: [
         {
             fieldFlags: "0",
             fieldMaxLength: "",
@@ -901,8 +897,8 @@
             fieldValue: "",
             title: "topmostSubform[0].Page2[0].f2_47[0]",
         },
-    ];
-    data.test1.fdfTemplate = {
+    ],
+    fdfTemplate: {
         "topmostSubform[0].Page1[0].FilingStatus[0].c1_01[0]": "",
         "topmostSubform[0].Page1[0].FilingStatus[0].c1_01[1]": "",
         "topmostSubform[0].Page1[0].FilingStatus[0].c1_01[2]": "",
@@ -1053,7 +1049,5 @@
         "topmostSubform[0].Page2[0].f2_45[0]": "",
         "topmostSubform[0].Page2[0].f2_46[0]": "",
         "topmostSubform[0].Page2[0].f2_47[0]": "",
-    };
-
-    module.exports = data;
-})();
+    },
+};

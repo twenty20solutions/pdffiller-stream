@@ -14,7 +14,7 @@
   "scripts": {
     "pretest": "npm run build",
     "test": "nyc ava --timeout=60s",
-    "lint": "eslint \"src/*.ts\"",
+    "lint": "eslint \"**/*.[jt]s\"",
     "build": "tsc -p tsconfig.json"
   },
   "keywords": [

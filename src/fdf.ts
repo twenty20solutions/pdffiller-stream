@@ -38,6 +38,7 @@ export default (data: never): Buffer => {
             body,
             Buffer.from(
                 `<<\n/T (${escapeString(name)})\n/V (${escapeString(
+                    // eslint-disable-next-line security/detect-object-injection
                     data[name]
                 )})\n>>\n`
             ),

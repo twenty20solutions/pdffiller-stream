@@ -1,5 +1,5 @@
 const test = require("ava");
-const { test1 } = require("./_expected-data");
+const { fdfTemplate } = require("./_expected-data");
 const { generateFDFTemplate } = require("..");
 
 const sourcePDF = "test/test.pdf";
@@ -22,5 +22,5 @@ test("should generate a FDF Template as expected", async (t) => {
 
 test("should generate another FDF Template with no errors", async (t) => {
     const fdf = await generateFDFTemplate(source2PDF);
-    t.deepEqual(fdf, test1.fdfTemplate);
+    t.deepEqual(fdf, fdfTemplate);
 });
