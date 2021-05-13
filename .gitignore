@@ -65,3 +65,4 @@ logs/
 build/
 .nyc_output
 dist
+coverage
