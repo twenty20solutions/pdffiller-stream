@@ -2,6 +2,7 @@ import { spawn } from "child_process";
 
 export interface FormField {
     fieldFlags: string;
+    fieldMaxLength: string | number;
     fieldType: string;
     fieldValue: string | boolean;
     title: string;
@@ -14,6 +15,7 @@ export default (sourceFile: string, nameRegex: never): Promise<FormField[]> => {
     let regName = /FieldName: ([^\n]*)/;
     const regType = /FieldType: ([\t .A-Za-z]+)/;
     const regFlags = /FieldFlags: ([\d\t .]+)/;
+    const regMaxLength = /FieldMaxLength: ([\d\t .]+)/;
     const fieldArray: FormField[] = [];
 
     if (nameRegex !== null && typeof nameRegex === "object")
@@ -41,6 +43,8 @@ export default (sourceFile: string, nameRegex: never): Promise<FormField[]> => {
                 fieldArray.push({
                     fieldFlags:
                         (regFlags.exec(field)?.[1].trim() as string) ?? "",
+                    fieldMaxLength:
+                        (regMaxLength.exec(field)?.[1].trim() as string) ?? "",
                     fieldType:
                         (regType.exec(field)?.[1].trim() as string) ?? "",
                     fieldValue: "",
