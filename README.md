@@ -7,13 +7,15 @@ PDF Filler Stream
 
 > The goal is cleaner integration, in eg. a microservices context, where it is preferable not to write multiple temporary files to disk and where you may wish to stream the generated pdf directly to a service like AWS.
 
-A node.js PDF form field data filler and FDF generator toolkit. This essentially is a wrapper around the PDF Toolkit library <a target="_blank" href="http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/">PDF ToolKit</a>.
+A node.js PDF form field data filler and FDF generator toolkit. This essentially is a wrapper around the PDF Toolkit library [PDF ToolKit](http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/).
+
+As of version 4.0.0, this library now targets [pdftk-java](https://gitlab.com/pdftk-java/pdftk), a modern fork of pdftk.
 
 
 Quick start
 -----------
 
-**You must first have `pdftk` (from pdftk-server, found [here](https://www.pdflabs.com/tools/pdftk-server/)) installed correctly on your platform.**
+**You must first have `pdftk` (from pdftk-java, found [here](https://gitlab.com/pdftk-java/pdftk)) installed correctly on your platform.**
 
 Then, install this library:
 
@@ -21,11 +23,7 @@ Then, install this library:
 npm install @sparticuz/pdffiller --save
 ```
 
-**Note for AWS Lambda users, you may use a pdftk layer, found [here](https://github.com/inetsys/pdftk-aws-lambda)**
-
-**Note for MacOS / OSX Developers** - the main `pdftk` package for OSX is currently broken as of OS 10.11, but PDFLabs released an alternative build that should work normally on the platform: https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg
-
-
+**Note for AWS Lambda users, you may use a pdftk layer, found [here](https://github.com/Sparticuz/pdftk-aws-lambda)**
 
 ## Examples
 
@@ -47,13 +45,8 @@ const data = {
     "nascar" : "Off"
 };
 
-fillForm(sourcePDF, data)
-    .then((outputStream) => {
-        // use the outputStream here;
-        // will be instance of stream.Readable
-    }).catch((err) => {
-        console.log(err);
-    });
+const output = await fillForm(sourcePDF, data);
+// output will be instance of stream.Readable
 ````
 
 This will take the test.pdf, fill the fields with the data values and stream a filled in, read-only PDF.
@@ -113,10 +106,7 @@ import { generateFDFTemplate } from '@sparticuz/pdffiller';
 
 const sourcePDF = "test/test.pdf";
 
-// Override the default field name regex. Default: /FieldName: ([^\n]*)/
-const nameRegex = null;
-
-const FDF_data = generateFDFTemplate(sourcePDF, nameRegex).then((fdfData) => {
+const FDF_data = generateFDFTemplate(sourcePDF).then((fdfData) => {
     console.log(fdfData);
 }).catch((err) => {
     console.log(err);

@@ -1,28 +1,43 @@
 import { spawn } from "child_process";
 
 export interface FormField {
+    fieldDefault: string;
     fieldFlags: string;
     fieldMaxLength: string | number;
+    fieldOptions: string[];
     fieldType: string;
     fieldValue: string | boolean;
     title: string;
 }
 
+const getFieldOptions = (field: string): string[] => {
+    const regOptions = /(FieldStateOption: ([^\n]*))/g;
+    const matches = field.match(regOptions);
+    const options: string[] = [];
+    if (matches) {
+        for (const match of matches) {
+            options.push(
+                /FieldStateOption: ([^\n]*)/.exec(match)?.[1].trim() as string
+            );
+        }
+    }
+    return options;
+};
+
 /**
  * Extracts the Form Fields from a PDF Form
  * @param sourceFile
- * @param nameRegex
  * @returns A FormField object
  */
-export default (sourceFile: string, nameRegex: never): Promise<FormField[]> => {
-    let regName = /FieldName: ([^\n]*)/;
+export default (sourceFile: string): Promise<FormField[]> => {
+    const regName = /FieldName: ([^\n]*)/;
     const regType = /FieldType: ([\t .A-Za-z]+)/;
     const regFlags = /FieldFlags: ([\d\t .]+)/;
     const regMaxLength = /FieldMaxLength: ([\d\t .]+)/;
+    const regValue = /FieldValue: ([^\n]*)/;
+    const regDefault = /FieldValueDefault: ([^\n]*)/;
+    const regOptions = /(FieldStateOption: ([^\n]*))/g;
     const fieldArray: FormField[] = [];
-
-    if (nameRegex !== null && typeof nameRegex === "object")
-        regName = nameRegex;
 
     return new Promise((resolve, reject) => {
         const childProcess = spawn("pdftk", [
@@ -44,13 +59,19 @@ export default (sourceFile: string, nameRegex: never): Promise<FormField[]> => {
             const fields = output.split("---").slice(1);
             for (const field of fields) {
                 fieldArray.push({
+                    fieldDefault:
+                        (regDefault.exec(field)?.[1].trim() as string) ?? "",
                     fieldFlags:
                         (regFlags.exec(field)?.[1].trim() as string) ?? "",
                     fieldMaxLength:
                         (regMaxLength.exec(field)?.[1].trim() as string) ?? "",
+                    fieldOptions: regOptions.test(field)
+                        ? getFieldOptions(field)
+                        : [],
                     fieldType:
                         (regType.exec(field)?.[1].trim() as string) ?? "",
-                    fieldValue: "",
+                    fieldValue:
+                        (regValue.exec(field)?.[1].trim() as string) ?? "",
                     title: (regName.exec(field)?.[1].trim() as string) ?? "",
                 });
             }

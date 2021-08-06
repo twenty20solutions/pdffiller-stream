@@ -1,5 +1,5 @@
 const test = require("ava");
-const { mapForm2PDF } = require("..");
+const mapForm2PDF = require("../dist/map-form-to-pdf").default;
 
 test("Should convert formJson to FDF data as expected", (t) => {
     const convMap = {
@@ -13,7 +13,7 @@ test("Should convert formJson to FDF data as expected", (t) => {
         nascarField: "nascar",
     };
 
-    const data3 = [
+    const data = [
         {
             fieldType: "Text",
             fieldValue: "John",
@@ -56,7 +56,7 @@ test("Should convert formJson to FDF data as expected", (t) => {
         },
     ];
 
-    const expected5 = {
+    const expected = {
         baseball: "Yes",
         basketball: "Off",
         date: "Jan 1, 2013",
@@ -66,6 +66,6 @@ test("Should convert formJson to FDF data as expected", (t) => {
         last_name: "John",
         nascar: "Off",
     };
-    const convertedFDF = mapForm2PDF(data3, convMap);
-    t.deepEqual(convertedFDF, expected5);
+    const convertedFDF = mapForm2PDF(data, convMap);
+    t.deepEqual(convertedFDF, expected);
 });
