@@ -19,8 +19,10 @@ jobs:
         node-version: [12.x, 14.x]
 
     steps:
-    - name: Install pdftk
-      run: sudo apt-get install pdftk-java
+    - name: Install pdftk-java 3.2.3
+      run: sudo curl https://gitlab.com/pdftk-java/pdftk/-/jobs/1353200062/artifacts/raw/build/native-image/pdftk --output /bin/pdftk
+    - name: Set pdftk permissions
+      run: sudo chmod +x /bin/pdftk
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
