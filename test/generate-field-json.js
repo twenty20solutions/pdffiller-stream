@@ -28,14 +28,28 @@ test("should use toFile to create a completely filled PDF that is read-only", as
     t.is(roFdf.length, 0);
 });
 
-test("should create an unflattened PDF with unfilled fields remaining", async (t) => {
-    const filledData = {
-        first_name: "Jerry",
-    };
+test.serial(
+    "should create an unflattened PDF with unfilled fields remaining",
+    async (t) => {
+        const filledData = {
+            first_name: "Jerry",
+        };
 
-    await fillForm(sourcePDF, filledData, false).toFile(destination3PDF);
-    const rwFdf = await generateFieldJson(destination3PDF);
-    t.not(rwFdf.length, 0);
+        await fillForm(sourcePDF, filledData, false).toFile(destination3PDF);
+        const rwFdf = await generateFieldJson(destination3PDF);
+        t.not(rwFdf.length, 0);
+    }
+);
+
+test("should return the values of a filled pdf", async (t) => {
+    const fdf = await generateFieldJson(destination3PDF);
+    let passed = false;
+    for (const field of fdf) {
+        if (field.title === "first_name") {
+            passed = true;
+        }
+    }
+    t.true(passed);
 });
 
 /**
@@ -59,57 +73,73 @@ test("should handle expanded utf characters and diacritics", async (t) => {
 test("should generate form field JSON as expected", async (t) => {
     const expected = [
         {
+            fieldDefault: "",
             fieldFlags: "0",
             fieldMaxLength: "",
+            fieldOptions: [],
             fieldType: "Text",
             fieldValue: "",
             title: "first_name",
         },
         {
+            fieldDefault: "",
             fieldFlags: "0",
             fieldMaxLength: "",
+            fieldOptions: [],
             fieldType: "Text",
             fieldValue: "",
             title: "last_name",
         },
         {
+            fieldDefault: "",
             fieldFlags: "0",
             fieldMaxLength: "",
+            fieldOptions: [],
             fieldType: "Text",
             fieldValue: "",
             title: "date",
         },
         {
+            fieldDefault: "",
             fieldFlags: "0",
             fieldMaxLength: "",
+            fieldOptions: ["Yes", "Off"],
             fieldType: "Button",
             fieldValue: "",
             title: "football",
         },
         {
+            fieldDefault: "",
             fieldFlags: "0",
             fieldMaxLength: "",
+            fieldOptions: ["Yes", "Off"],
             fieldType: "Button",
             fieldValue: "",
             title: "baseball",
         },
         {
+            fieldDefault: "",
             fieldFlags: "0",
             fieldMaxLength: "",
+            fieldOptions: [],
             fieldType: "Button",
             fieldValue: "",
             title: "basketball",
         },
         {
+            fieldDefault: "",
             fieldFlags: "0",
             fieldMaxLength: "",
+            fieldOptions: ["Yes", "Off"],
             fieldType: "Button",
             fieldValue: "",
             title: "nascar",
         },
         {
+            fieldDefault: "",
             fieldFlags: "0",
             fieldMaxLength: "",
+            fieldOptions: ["Yes", "Off"],
             fieldType: "Button",
             fieldValue: "",
             title: "hockey",
@@ -124,4 +154,3 @@ test("should generate a large form field JSON with no errors", async (t) => {
     const fdf = await generateFieldJson(source2PDF);
     t.deepEqual(fdf, formFields);
 });
-
