@@ -125,4 +125,3 @@ test("should generate a large form field JSON with no errors", async (t) => {
     t.deepEqual(fdf, formFields);
 });
 
-test.todo("should make sure nameRegex works correctly");

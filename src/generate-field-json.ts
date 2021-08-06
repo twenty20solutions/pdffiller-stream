@@ -11,18 +11,13 @@ export interface FormField {
 /**
  * Extracts the Form Fields from a PDF Form
  * @param sourceFile
- * @param nameRegex
  * @returns A FormField object
  */
-export default (sourceFile: string, nameRegex: never): Promise<FormField[]> => {
     let regName = /FieldName: ([^\n]*)/;
     const regType = /FieldType: ([\t .A-Za-z]+)/;
     const regFlags = /FieldFlags: ([\d\t .]+)/;
     const regMaxLength = /FieldMaxLength: ([\d\t .]+)/;
     const fieldArray: FormField[] = [];
-
-    if (nameRegex !== null && typeof nameRegex === "object")
-        regName = nameRegex;
 
     return new Promise((resolve, reject) => {
         const childProcess = spawn("pdftk", [
