@@ -66,3 +66,4 @@ build/
 .nyc_output
 dist
 coverage
+test_complete*
