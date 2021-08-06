@@ -1,6 +1,9 @@
 const test = require("ava");
 const { Readable } = require("stream");
 const fillForm = require("..").default;
+// generateFieldJson is just used here to verify that form has flattened.
+// If it's flattened, we'll assume it was filled out properly.
+const generateFieldJson = require("../dist/generate-field-json").default;
 
 const sourcePDF = "test/test.pdf";
 
@@ -27,6 +30,59 @@ test("should return a readable stream when creating a pdf from test.pdf with fil
 test("should throw when the sourcePDF doesn't exist", async (t) => {
     const error = await t.throwsAsync(() => fillForm("nope.pdf", data));
     t.is(error.message, "File does not exist or is not readable");
+});
+
+test("should use toFile to create a completely filled PDF that is read-only", async (t) => {
+    const destinationPdf = "test/test_complete_filled.pdf";
+    await fillForm(sourcePDF, data).toFile(destinationPdf);
+    const roFdf = await generateFieldJson(destinationPdf);
+    t.is(roFdf.length, 0);
+});
+
+/**
+ * This test is passing, but not actually saving the UTF-8 correctly.
+ * See #11
+ */
+test("should handle expanded utf characters and diacritics", async (t) => {
+    const destinationPdf = "test/test_complete_diacritics.pdf";
+    const diacriticsData = {
+        ...data,
+        first_name: "मुख्यपृष्ठम्",
+        last_name: "العقائدية الأخرى",
+    };
+
+    await fillForm(sourcePDF, diacriticsData, [
+        "drop_xfa",
+        "need_appearances",
+    ]).toFile(destinationPdf);
+    const fdf = await generateFieldJson(destinationPdf);
+    t.not(fdf.length, 0);
+});
+
+test.serial(
+    "should create an unflattened PDF with unfilled fields remaining",
+    async (t) => {
+        const destinationPdf = "test/test_complete_not_flattened.pdf";
+        const filledData = {
+            first_name: "Jerry",
+        };
+
+        await fillForm(sourcePDF, filledData, false).toFile(destinationPdf);
+        const rwFdf = await generateFieldJson(destinationPdf);
+        t.not(rwFdf.length, 0);
+    }
+);
+
+test("should return the values of a filled, but not flattened, pdf", async (t) => {
+    const destinationPdf = "test/test_complete_not_flattened.pdf";
+    const fdf = await generateFieldJson(destinationPdf);
+    let passed = false;
+    for (const field of fdf) {
+        if (field.title === "first_name") {
+            passed = true;
+        }
+    }
+    t.true(passed);
 });
 
 test.todo("should thrown when toFile is called on an invalid path");
