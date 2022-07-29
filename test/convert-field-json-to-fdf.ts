@@ -1,6 +1,6 @@
-const test = require("ava");
-const convertFieldJsonToFDF =
-    require("../dist/convert-field-json-to-fdf").default;
+import test from "ava";
+import convertFieldJsonToFdf from "../src/convert-field-json-to-fdf";
+import type { FormField } from "../src/generate-field-json";
 
 test("Should change the boolean to a 'Yes/Off'", (t) => {
     const expected = {
@@ -55,8 +55,8 @@ test("Should change the boolean to a 'Yes/Off'", (t) => {
             fieldValue: false,
             title: "nascar",
         },
-    ];
+    ] as FormField[];
 
-    const results = convertFieldJsonToFDF(input);
+    const results = convertFieldJsonToFdf(input);
     t.deepEqual(results, expected);
 });
