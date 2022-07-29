@@ -42,7 +42,7 @@ const toFile = (
  */
 export default (
     sourceFile: string,
-    fieldValues: never,
+    fieldValues: any,
     extraArguments: string[] | false = ["flatten"]
 ): Promise<Readable> => {
     const promised: Promise<Readable> = new Promise((resolve, reject) => {
