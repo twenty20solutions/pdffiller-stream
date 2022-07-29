@@ -1,5 +1,6 @@
-const test = require("ava");
-const mapForm2PDF = require("../dist/map-form-to-pdf").default;
+import test from "ava";
+import { FormField } from "../src/generate-field-json";
+import mapFormToPdf from "../src/map-form-to-pdf";
 
 test("Should convert formJson to FDF data as expected", (t) => {
     const convMap = {
@@ -54,7 +55,7 @@ test("Should convert formJson to FDF data as expected", (t) => {
             fieldValue: false,
             title: "nascarField",
         },
-    ];
+    ] as FormField[];
 
     const expected = {
         baseball: "Yes",
@@ -66,6 +67,6 @@ test("Should convert formJson to FDF data as expected", (t) => {
         last_name: "John",
         nascar: "Off",
     };
-    const convertedFDF = mapForm2PDF(data, convMap);
+    const convertedFDF = mapFormToPdf(data, convMap);
     t.deepEqual(convertedFDF, expected);
 });

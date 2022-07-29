@@ -1,5 +1,5 @@
-const test = require("ava");
-const createFdf = require("../dist/fdf").default;
+import test from "ava";
+import createFdf from "../src/fdf";
 
 test("should create a FDF template and not error with a null value", (t) => {
     const fdfData = createFdf({

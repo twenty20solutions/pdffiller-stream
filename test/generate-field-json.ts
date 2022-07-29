@@ -1,6 +1,8 @@
-const test = require("ava");
-const generateFieldJson = require("../dist/generate-field-json").default;
-const { formFields } = require("./_expected-data");
+import test from "ava";
+import generateFieldJson from "../src/generate-field-json";
+
+// @ts-expect-error I'm not making types for this
+import { formFields } from "./_expected-data.js";
 
 const sourcePDF = "test/test.pdf";
 const source2PDF = "test/test1.pdf";

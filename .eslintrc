@@ -1,9 +1,0 @@
-{
-  "env": {
-    "es2020": true,
-    "node": true
-  },
-  "extends": [
-    "@sparticuz/eslint-config"
-  ]
-}

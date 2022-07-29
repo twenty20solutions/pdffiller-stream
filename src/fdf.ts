@@ -20,25 +20,26 @@ const escapeString = (value: string | null | undefined) => {
  * @param data The JSON object
  * @returns FDF document in a Buffer
  */
-export default (data: never): Buffer => {
+export default (data: any): Buffer => {
     // only this sequence in FDF header requires char codes
     const header = Buffer.from(
         `%FDF-1.2\n${
-            String.fromCharCode(226) +
-            String.fromCharCode(227) +
-            String.fromCharCode(207) +
-            String.fromCharCode(211)
+            String.fromCodePoint(226) +
+            String.fromCodePoint(227) +
+            String.fromCodePoint(207) +
+            String.fromCodePoint(211)
         }\n1 0 obj \n<<\n/FDF \n<<\n/Fields [\n`
     );
 
     let body = Buffer.from([]);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     for (const name of Object.keys(data)) {
         body = Buffer.concat([
             body,
             Buffer.from(
                 `<<\n/T (${escapeString(name)})\n/V (${escapeString(
-                    // eslint-disable-next-line security/detect-object-injection
+                    // eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
                     data[name]
                 )})\n>>\n`
             ),
