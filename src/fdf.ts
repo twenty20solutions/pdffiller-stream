@@ -24,10 +24,10 @@ export default (data: any): Buffer => {
     // only this sequence in FDF header requires char codes
     const header = Buffer.from(
         `%FDF-1.2\n${
-            String.fromCharCode(226) +
-            String.fromCharCode(227) +
-            String.fromCharCode(207) +
-            String.fromCharCode(211)
+            String.fromCodePoint(226) +
+            String.fromCodePoint(227) +
+            String.fromCodePoint(207) +
+            String.fromCodePoint(211)
         }\n1 0 obj \n<<\n/FDF \n<<\n/Fields [\n`
     );
 
