@@ -21,7 +21,7 @@ const getFieldOptions = (field: string): string[] => {
             );
         }
     }
-    return options;
+    return options.sort();
 };
 
 /**
