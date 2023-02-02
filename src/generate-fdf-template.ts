@@ -6,10 +6,10 @@ import generateFieldJson from "./generate-field-json.js";
  * @returns A json object
  */
 export default async (sourceFile: string): Promise<Record<string, string>> => {
-    const formFields = await generateFieldJson(sourceFile);
-    const json: Record<string, string> = {};
-    for (const row of formFields) {
-        json[row.title] = row.fieldValue as string;
-    }
-    return json;
+  const formFields = await generateFieldJson(sourceFile);
+  const json: Record<string, string> = {};
+  for (const row of formFields) {
+    json[row.title] = row.fieldValue as string;
+  }
+  return json;
 };
