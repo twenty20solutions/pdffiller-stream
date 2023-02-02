@@ -45,7 +45,8 @@ export default (
 ): Record<string, string> => {
   return mapKeys(
     convertFieldJsonToFDF(formFields),
-    (_value: unknown, key: string | number) => {
+    // @ts-expect-error I'm not sure why this is not type safe
+    (value: unknown, key: string | number) => {
       if (Object.prototype.hasOwnProperty.call(convMap, key)) {
         // This is an acceptable risk. We are assuming the developer knows the PDF being used.
         // eslint-disable-next-line security/detect-object-injection
