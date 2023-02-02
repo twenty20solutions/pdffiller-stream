@@ -1,7 +1,5 @@
 import test from "ava";
-import generateFdfTemplate from "../src/generate-fdf-template";
-
-// @ts-expect-error I'm not making types for this
+import generateFdfTemplate from "../src/generate-fdf-template.js";
 import { fdfTemplate } from "./_expected-data.js";
 
 const sourcePDF = "test/test.pdf";

@@ -32,11 +32,11 @@
     "test": "c8 --reporter=lcov --reporter=text --all --include=src ava --timeout=60s"
   },
   "ava": {
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register/transpile-only"
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=ts-node/esm"
     ]
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 import test from "ava";
-import convertFieldJsonToFdf from "../src/convert-field-json-to-fdf";
-import type { FormField } from "../src/generate-field-json";
+import convertFieldJsonToFdf from "../src/convert-field-json-to-fdf.js";
+import type { FormField } from "../src/generate-field-json.js";
 
 test("Should change the boolean to a 'Yes/Off'", (t) => {
     const expected = {

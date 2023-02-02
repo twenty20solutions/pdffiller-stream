@@ -1,5 +1,5 @@
 import test from "ava";
-import createFdf from "../src/fdf";
+import createFdf from "../src/fdf.js";
 
 test("should create a FDF template and not error with a null value", (t) => {
     const fdfData = createFdf({

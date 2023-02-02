@@ -1,6 +1,6 @@
 import test from "ava";
-import { FormField } from "../src/generate-field-json";
-import mapFormToPdf from "../src/map-form-to-pdf";
+import type { FormField } from "../src/generate-field-json.js";
+import mapFormToPdf from "../src/map-form-to-pdf.js";
 
 test("Should convert formJson to FDF data as expected", (t) => {
     const convMap = {
