@@ -1,5 +1,5 @@
-import type { FormField } from "./generate-field-json";
-import convertFieldJsonToFDF from "./convert-field-json-to-fdf";
+import type { FormField } from "./generate-field-json.js";
+import convertFieldJsonToFDF from "./convert-field-json-to-fdf.js";
 
 // https://github.com/lodash/lodash/blob/master/mapKey.js
 /**

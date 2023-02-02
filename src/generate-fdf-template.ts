@@ -1,4 +1,4 @@
-import generateFieldJson from "./generate-field-json";
+import generateFieldJson from "./generate-field-json.js";
 
 /**
  * Generates an object with key/value pairs

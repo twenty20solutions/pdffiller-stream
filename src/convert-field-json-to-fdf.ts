@@ -1,4 +1,4 @@
-import type { FormField } from "./generate-field-json";
+import type { FormField } from "./generate-field-json.js";
 /**
  * Converts JSON's boolean type to FDF's Yes/Off type
  * @param formFields An array of Form Fields

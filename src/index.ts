@@ -1,7 +1,7 @@
-import { spawn } from "child_process";
-import { access, constants, createWriteStream } from "fs";
-import type { Readable } from "stream";
-import createFdf from "./fdf";
+import { spawn } from "node:child_process";
+import { access, constants, createWriteStream } from "node:fs";
+import type { Readable } from "node:stream";
+import createFdf from "./fdf.js";
 
 /**
  * convenience chainable method for writing to a file (see examples)
@@ -86,6 +86,6 @@ export default (
     return promised;
 };
 
-export { default as generateFDFTemplate } from "./generate-fdf-template";
-export { default as convFieldJson2FDF } from "./convert-field-json-to-fdf";
-export { default as mapForm2PDF } from "./map-form-to-pdf";
+export { default as generateFDFTemplate } from "./generate-fdf-template.js";
+export { default as convFieldJson2FDF } from "./convert-field-json-to-fdf.js";
+export { default as mapForm2PDF } from "./map-form-to-pdf.js";
