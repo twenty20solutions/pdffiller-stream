@@ -1,12 +1,12 @@
 {
-    "extends": "@tsconfig/node14",
-    "compilerOptions": {
-      "declaration": true,
-      "outDir": "dist",
-      "removeComments": false,
-    },
-    "include": [
-        "src",
-        "test"
-    ]
-  }
+  "extends": "@tsconfig/node16-strictest-esm",
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "dist",
+    "removeComments": false,
+  },
+  "include": [
+    "src",
+    "test"
+  ]
+}
