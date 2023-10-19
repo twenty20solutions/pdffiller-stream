@@ -9,9 +9,9 @@ const escapeString = (value: string | null | undefined) => {
   return Buffer.from(
     value
       .toString()
-      .replace(/\\/g, "\\\\")
-      .replace(/\(/g, "\\(")
-      .replace(/\)/g, "\\)")
+      .replaceAll("\\", "\\\\")
+      .replaceAll("(", "\\(")
+      .replaceAll(")", "\\)")
   ).toString("utf8");
 };
 
