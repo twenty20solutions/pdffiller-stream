@@ -1,5 +1,4 @@
-PDF Filler Stream
-======
+# PDF Filler Stream
 
 [![npm version](https://badge.fury.io/js/%40sparticuz%2Fpdffiller.svg)](https://badge.fury.io/js/%40sparticuz%2Fpdffiller) ![Node.js CI](https://github.com/Sparticuz/pdffiller-stream/workflows/Node.js%20CI/badge.svg) ![CodeQL](https://github.com/Sparticuz/pdffiller-stream/workflows/CodeQL/badge.svg)
 
@@ -11,9 +10,7 @@ A node.js PDF form field data filler and FDF generator toolkit. This essentially
 
 As of version 4.0.0, this library now targets [pdftk-java](https://gitlab.com/pdftk-java/pdftk), a modern fork of pdftk.
 
-
-Quick start
------------
+## Quick start
 
 **You must first have `pdftk` (from pdftk-java, found [here](https://gitlab.com/pdftk-java/pdftk)) installed correctly on your platform.**
 
@@ -29,25 +26,25 @@ npm install @sparticuz/pdffiller --save
 
 #### 1.Fill PDF with existing FDF Data
 
-````javascript
-import fillForm from '@sparticuz/pdffiller';
+```javascript
+import fillForm from "@sparticuz/pdffiller";
 
 const sourcePDF = "test/test.pdf";
 
 const data = {
-    "last_name" : "John",
-    "first_name" : "Doe",
-    "date" : "Jan 1, 2013",
-    "football" : "Off",
-    "baseball" : "Yes",
-    "basketball" : "Off",
-    "hockey" : "Yes",
-    "nascar" : "Off"
+  last_name: "John",
+  first_name: "Doe",
+  date: "Jan 1, 2013",
+  football: "Off",
+  baseball: "Yes",
+  basketball: "Off",
+  hockey: "Yes",
+  nascar: "Off",
 };
 
 const output = await fillForm(sourcePDF, data);
 // output will be instance of stream.Readable
-````
+```
 
 This will take the test.pdf, fill the fields with the data values and stream a filled in, read-only PDF.
 
@@ -55,35 +52,37 @@ A chainable convenience method `toFile` is attached to the response, if you simp
 
 ```javascript
 fillForm(sourcePDF, data)
-    .toFile('outputFile.PDF')
-    .then(() => {
-        // your file has been written
-    }).catch((err) => {
-        console.log(err);
-    });
+  .toFile("outputFile.PDF")
+  .then(() => {
+    // your file has been written
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 ```
 
 You could also stream the resulting data directly to AWS, doing something like this with an instantiated `s3` client:
 
 ```javascript
 fillForm(sourcePDF, data)
-    .then((outputStream) => {
-        const Body = outputStream;
-        const Bucket = 'some-bucket';
-        const Key = 'myFancyNewFilledPDF';
-        const ContentType = 'application/pdf';
+  .then((outputStream) => {
+    const Body = outputStream;
+    const Bucket = "some-bucket";
+    const Key = "myFancyNewFilledPDF";
+    const ContentType = "application/pdf";
 
-        const uploader = new AWS.S3.ManagedUpload({
-            params: {Bucket, Key, Body, ContentType},
-            service: s3,
-        });
-
-        uploader.promise().then((data) => {/* do something with AWS response */})
-
-    }).catch((err) => {
-        console.log(err);
+    const uploader = new AWS.S3.ManagedUpload({
+      params: { Bucket, Key, Body, ContentType },
+      service: s3,
     });
 
+    uploader.promise().then((data) => {
+      /* do something with AWS response */
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 ```
 
 Calling `fillForm()` with `shouldFlatten = false` will leave any unmapped fields still editable, as per the `pdftk` command specification.
@@ -98,86 +97,87 @@ fillForm(sourcePDF, data, shouldFlatten)
     })
 ```
 
-
 #### 2. Generate FDF Template from PDF
 
-````javascript
-import { generateFDFTemplate } from '@sparticuz/pdffiller';
+```javascript
+import { generateFDFTemplate } from "@sparticuz/pdffiller";
 
 const sourcePDF = "test/test.pdf";
 
-const FDF_data = generateFDFTemplate(sourcePDF).then((fdfData) => {
+const FDF_data = generateFDFTemplate(sourcePDF)
+  .then((fdfData) => {
     console.log(fdfData);
-}).catch((err) => {
+  })
+  .catch((err) => {
     console.log(err);
-});
-
-````
+  });
+```
 
 This will print out this
+
 ```json
 {
-    "last_name" : "",
-    "first_name" : "",
-    "date" : "",
-    "football" : "",
-    "baseball" : "",
-    "basketball" : "",
-    "hockey" : "",
-    "nascar" : ""
+  "last_name": "",
+  "first_name": "",
+  "date": "",
+  "football": "",
+  "baseball": "",
+  "basketball": "",
+  "hockey": "",
+  "nascar": ""
 }
 ```
 
 #### 3. Map form fields to PDF fields
-````javascript
-import { mapForm2PDF } from '@sparticuz/pdffiller';
+
+```javascript
+import { mapForm2PDF } from "@sparticuz/pdffiller";
 
 const conversionMap = {
-
-    "lastName": "last_name",
-    "firstName": "first_name",
-    "Date": "date",
-    "footballField": "football",
-    "baseballField": "baseball",
-    "bballField": "basketball",
-    "hockeyField": "hockey",
-    "nascarField": "nascar"
+  lastName: "last_name",
+  firstName: "first_name",
+  Date: "date",
+  footballField: "football",
+  baseballField: "baseball",
+  bballField: "basketball",
+  hockeyField: "hockey",
+  nascarField: "nascar",
 };
 
 const FormFields = {
-    "lastName" : "John",
-    "firstName" : "Doe",
-    "Date" : "Jan 1, 2013",
-    "footballField" : "Off",
-    "baseballField" : "Yes",
-    "bballField" : "Off",
-    "hockeyField" : "Yes",
-    "nascarField" : "Off"
+  lastName: "John",
+  firstName: "Doe",
+  Date: "Jan 1, 2013",
+  footballField: "Off",
+  baseballField: "Yes",
+  bballField: "Off",
+  hockeyField: "Yes",
+  nascarField: "Off",
 };
 
 mapForm2PDF(data, convMap).then((mappedFields) => {
-    console.log(mappedFields);
+  console.log(mappedFields);
 });
-````
+```
 
 This will print out the object below.
+
 ```json
-
 {
-    "last_name" : "John",
-    "first_name" : "Doe",
-    "date" : "Jan 1, 2013",
-    "football" : "Off",
-    "baseball" : "Yes",
-    "basketball" : "Off",
-    "hockey" : "Yes",
-    "nascar" : "Off"
-
+  "last_name": "John",
+  "first_name": "Doe",
+  "date": "Jan 1, 2013",
+  "football": "Off",
+  "baseball": "Yes",
+  "basketball": "Off",
+  "hockey": "Yes",
+  "nascar": "Off"
 }
 ```
 
 #### 4. Convert fieldJson to FDF data
-````javascript
+
+```javascript
 import { convFieldJson2FDF } from '@sparticuz/pdffiller';
 
 const fieldJson = [
@@ -227,11 +227,11 @@ const fieldJson = [
 const FDFData = convFieldJson2FDF(data);
 
 console.log(FDFData)
-````
+```
 
 This will print out:
 
-````json
+```json
 {
     "last_name" : "John",
     "first_name" : "Doe",
@@ -242,4 +242,4 @@ This will print out:
     "hockey" : "Yes",
     "nascar" : "Off"
 };
-````
+```

@@ -9,14 +9,12 @@ import createFdf from "./fdf.js";
  * @param path
  * @returns a boolean
  * */
-const toFile = (
-  promised: Promise<Readable>,
-  path: string
-): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+const toFile = (promised: Promise<Readable>, path: string): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     promised
       // eslint-disable-next-line promise/always-return
       .then((outputStream) => {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         const output = createWriteStream(path);
         outputStream.pipe(output);
         outputStream.on("close", () => {
@@ -26,7 +24,6 @@ const toFile = (
       })
       .catch((error) => reject(error));
   });
-};
 
 /**
  * This function will take in a source pdf file and a json object of field values
@@ -37,10 +34,10 @@ const toFile = (
  */
 export default (
   sourceFile: string,
-  fieldValues: any,
+  fieldValues: Record<string, string>,
   extraArguments: string[] | false = ["flatten"]
 ): Promise<Readable> => {
-  const promised: Promise<Readable> = new Promise((resolve, reject) => {
+  const promised = new Promise<Readable>((resolve, reject) => {
     // Check to see if sourceFile exists!
     access(sourceFile, constants.F_OK || constants.R_OK, (error) => {
       if (error) reject(new Error("File does not exist or is not readable"));

@@ -9,9 +9,9 @@ const escapeString = (value: string | null | undefined) => {
   return Buffer.from(
     value
       .toString()
-      .replace(/\\/g, "\\\\")
-      .replace(/\(/g, "\\(")
-      .replace(/\)/g, "\\)")
+      .replaceAll("\\", "\\\\")
+      .replaceAll("(", "\\(")
+      .replaceAll(")", "\\)")
   ).toString("utf8");
 };
 
@@ -20,7 +20,7 @@ const escapeString = (value: string | null | undefined) => {
  * @param data The JSON object
  * @returns FDF document in a Buffer
  */
-export default (data: any): Buffer => {
+export default (data: Record<string, string>): Buffer => {
   // only this sequence in FDF header requires char codes
   const header = Buffer.from(
     `%FDF-1.2\n${
@@ -33,13 +33,12 @@ export default (data: any): Buffer => {
 
   let body = Buffer.from([]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   for (const name of Object.keys(data)) {
     body = Buffer.concat([
       body,
       Buffer.from(
         `<<\n/T (${escapeString(name)})\n/V (${escapeString(
-          // eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+          // eslint-disable-next-line security/detect-object-injection
           data[name]
         )})\n>>\n`
       ),

@@ -1,12 +1,14 @@
 {
-  "extends": "@tsconfig/node16-strictest-esm",
+  "extends": ["@tsconfig/node18/tsconfig", "@tsconfig/strictest/tsconfig"],
   "compilerOptions": {
     "declaration": true,
+    "exactOptionalPropertyTypes": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noUnusedLocals": false,
     "outDir": "dist",
     "removeComments": false,
+    "sourceMap": true
   },
-  "include": [
-    "src",
-    "test"
-  ]
+  "include": ["src", "test"]
 }

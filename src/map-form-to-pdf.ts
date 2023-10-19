@@ -42,8 +42,8 @@ const mapKeys = (
 export default (
   formFields: FormField[],
   convMap: Record<string, string>
-): Record<string, string> => {
-  return mapKeys(
+): Record<string, string> =>
+  mapKeys(
     convertFieldJsonToFDF(formFields),
     // @ts-expect-error I'm not sure why this is not type safe
     (value: unknown, key: string | number) => {
@@ -55,4 +55,3 @@ export default (
       return key as string;
     }
   );
-};
