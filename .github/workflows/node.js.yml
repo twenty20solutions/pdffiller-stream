@@ -19,7 +19,7 @@ jobs:
         node-version: [14.x, 16.x, 18.x]
 
     steps:
-    - name: Install pdftk-java 3.3.2, native image
+    - name: Install pdftk-java 3.3.3, native image
       run: sudo curl https://gitlab.com/api/v4/projects/5024297/packages/generic/pdftk-java/v3.3.3/pdftk --output /bin/pdftk
     - name: Set pdftk permissions
       run: sudo chmod +x /bin/pdftk
