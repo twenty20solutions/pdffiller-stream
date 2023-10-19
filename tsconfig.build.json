@@ -5,7 +5,5 @@
     "removeComments": true,
     "sourceMap": false
   },
-  "exclude": [
-    "test",
-  ],
+  "exclude": ["test"]
 }
