@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { spawn } from "node:child_process";
 
 export interface FormField {
@@ -16,11 +17,10 @@ const getFieldOptions = (field: string): string[] => {
   const options: string[] = [];
   if (matches) {
     for (const match of matches) {
-      options.push(
-        /FieldStateOption: ([^\n]*)/.exec(match)?.[1]?.trim() as string
-      );
+      options.push(/FieldStateOption: ([^\n]*)/.exec(match)?.[1]?.trim()!);
     }
   }
+  // eslint-disable-next-line etc/no-assign-mutated-array
   return options.sort();
 };
 
