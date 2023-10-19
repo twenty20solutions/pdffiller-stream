@@ -12,5 +12,6 @@ module.exports = {
   rules: {
     "dot-notation": "off",
     "no-console": "off",
+    "etc/no-implicit-any-catch": "off",
   },
 };

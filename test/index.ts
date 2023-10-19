@@ -1,5 +1,5 @@
 import test from "ava";
-import { Readable } from "stream";
+import { Readable } from "node:stream";
 import fillForm from "../src/index.js";
 
 // generateFieldJson is just used here to verify that form has flattened.
