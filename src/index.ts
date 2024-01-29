@@ -1,7 +1,9 @@
 import { spawn } from "node:child_process";
 import { access, constants, createWriteStream } from "node:fs";
 import type { Readable } from "node:stream";
+import iconv from "iconv-lite";
 import createFdf from "./fdf.js";
+
 
 /**
  * convenience chainable method for writing to a file (see examples)
@@ -44,7 +46,9 @@ export default (
     });
 
     // Generate the data from the field values.
-    const FDFinput = createFdf(fieldValues);
+    let FDFinput = createFdf(fieldValues);
+    const FDFinputString: string = iconv.decode(FDFinput, "utf8");
+    FDFinput = iconv.encode(FDFinputString, "CP1252");
 
     const runArguments = [sourceFile, "fill_form", "-", "output", "-"];
 
