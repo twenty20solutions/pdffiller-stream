@@ -4,9 +4,7 @@
 
 > This is a fork of the [pdf-filler](https://github.com/Sparticuz/pdffiller-stream) great package. Modified to support both ESM and CommonJS and also support accents when filling out the forms.
 
-A node.js PDF form field data filler and FDF generator toolkit. This essentially is a wrapper around the PDF Toolkit library [PDF ToolKit](http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/).
-
-As of version 4.0.0, this library now targets [pdftk-java](https://gitlab.com/pdftk-java/pdftk), a modern fork of pdftk.
+A node.js PDF form field data filler and FDF generator toolkit. This essentially is a wrapper around the java PDF Toolkit library [pdftk-java](https://gitlab.com/pdftk-java/pdftk).
 
 ## Quick start
 
@@ -17,8 +15,6 @@ Then, install this library:
 ```bash
 npm install @dbeaulieu/pdffiller --save
 ```
-
-**Note for AWS Lambda users, you may use a pdftk layer, found [here](https://github.com/dbeaulieu/pdftk-aws-lambda)**
 
 ## Examples
 
