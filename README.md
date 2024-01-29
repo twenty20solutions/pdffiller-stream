@@ -1,10 +1,8 @@
 # PDF Filler Stream
 
-[![npm version](https://badge.fury.io/js/%40sparticuz%2Fpdffiller.svg)](https://badge.fury.io/js/%40sparticuz%2Fpdffiller) ![Node.js CI](https://github.com/Sparticuz/pdffiller-stream/workflows/Node.js%20CI/badge.svg) ![CodeQL](https://github.com/Sparticuz/pdffiller-stream/workflows/CodeQL/badge.svg)
+[![npm version](https://badge.fury.io/js/%40dbeaulieu%2Fpdffiller.svg)]
 
-> This is a fork of the [pdf-filler](https://github.com/pdffillerjs/pdffiller) package, modified to return promises and readable streams, by piping data in/out of a spawned pdftk process instead of temporarily writing files to disk.
-
-> The goal is cleaner integration, in eg. a microservices context, where it is preferable not to write multiple temporary files to disk and where you may wish to stream the generated pdf directly to a service like AWS.
+> This is a fork of the [pdf-filler](https://github.com/Sparticuz/pdffiller-stream) great package. Modified to support both ESM and CommonJS and also support accents when filling out the forms.
 
 A node.js PDF form field data filler and FDF generator toolkit. This essentially is a wrapper around the PDF Toolkit library [PDF ToolKit](http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/).
 
@@ -17,17 +15,17 @@ As of version 4.0.0, this library now targets [pdftk-java](https://gitlab.com/pd
 Then, install this library:
 
 ```bash
-npm install @sparticuz/pdffiller --save
+npm install @dbeaulieu/pdffiller --save
 ```
 
-**Note for AWS Lambda users, you may use a pdftk layer, found [here](https://github.com/Sparticuz/pdftk-aws-lambda)**
+**Note for AWS Lambda users, you may use a pdftk layer, found [here](https://github.com/dbeaulieu/pdftk-aws-lambda)**
 
 ## Examples
 
 #### 1.Fill PDF with existing FDF Data
 
 ```javascript
-import fillForm from "@sparticuz/pdffiller";
+import fillForm from "@dbeaulieu/pdffiller";
 
 const sourcePDF = "test/test.pdf";
 
@@ -100,7 +98,7 @@ fillForm(sourcePDF, data, shouldFlatten)
 #### 2. Generate FDF Template from PDF
 
 ```javascript
-import { generateFDFTemplate } from "@sparticuz/pdffiller";
+import { generateFDFTemplate } from "@dbeaulieu/pdffiller";
 
 const sourcePDF = "test/test.pdf";
 
@@ -131,7 +129,7 @@ This will print out this
 #### 3. Map form fields to PDF fields
 
 ```javascript
-import { mapForm2PDF } from "@sparticuz/pdffiller";
+import { mapForm2PDF } from "@dbeaulieu/pdffiller";
 
 const conversionMap = {
   lastName: "last_name",
@@ -178,7 +176,7 @@ This will print out the object below.
 #### 4. Convert fieldJson to FDF data
 
 ```javascript
-import { convFieldJson2FDF } from '@sparticuz/pdffiller';
+import { convFieldJson2FDF } from '@dbeaulieu/pdffiller';
 
 const fieldJson = [
     {
